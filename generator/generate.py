@@ -252,6 +252,17 @@ def clean_schema(schema):
                 cleaned[key] = list(value)  # Convert to list if it's not already
             elif isinstance(value, dict):
                 cleaned[key] = clean_schema(value)
+            elif key == 'oneOf':
+                # Collapse oneOfs if possible.
+                one_of_key = set()
+                one_of_key.update(*[x.keys() for x in value])
+                one_of_key.discard('permission')
+                if len(one_of_key) != 1:
+                    raise ValueError(f'oneOf key not the same: {value} {one_of_key}')
+                one_of_key = one_of_key.pop()
+                one_of_values = set()
+                one_of_values.update(*[x[one_of_key] for x in value if one_of_key in x])
+                cleaned[one_of_key] = list(sorted(one_of_values))
             else:
                 cleaned[key] = value
     if 'linkTo' in schema or 'linkFrom' in schema:
