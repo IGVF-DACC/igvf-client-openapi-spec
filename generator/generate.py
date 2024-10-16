@@ -167,6 +167,15 @@ def fill_in_collection_template(schema_name, schema, schema_names_to_collection_
         add_as_item = 'items' not in prop_schema # We always want to be able to enter multiple search values.
         exclude = ['default', 'uniqueItems', 'notSubmittable', 'readonly', 'permission', 'submissionExample', 'serverDefault', 'minItems', 'format', 'oneOf', 'anyOf']
         filtered_prop_schema = {k: v for k, v in prop_schema.items() if k not in exclude}
+        # Deal with enums split by oneOf.
+        # e.g.: {"oneOf": [{"enum": ["bed", "csv", "gtf", "tsv", "vcf"]}, {"enum": ["txt"], "permission": "admin_only"}]}
+        if 'oneOf' in prop_schema:
+            maybe_enums = set()
+            for oneof in prop_schema['oneOf']:
+                if 'enum' in oneof:
+                    maybe_enums.update(oneof['enum'])
+            if maybe_enums:
+                filtered_prop_schema['enum'] = list(maybe_enums)
         if prop == '@type':
             continue
         if prop == 'schema_version':
@@ -348,7 +357,7 @@ def generate():
     schema_names_to_collection_names = get_schema_names_to_collection_names()
     raw_embedded_fields = get_raw_embedded_fields()
     slim_embedded_fields = get_slim_embedded_fields(raw_embedded_fields, raw_schemas)
-    openapi_spec = generate_openapi_spec(schemas, schema_names_to_collection_names, slim_embedded_fields, version='53.0.1')
+    openapi_spec = generate_openapi_spec(schemas, schema_names_to_collection_names, slim_embedded_fields, version='53.0.4')
     return openapi_spec
 
 
