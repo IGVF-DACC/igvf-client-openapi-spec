@@ -263,6 +263,26 @@ def clean_schema(schema):
                 one_of_values = set()
                 one_of_values.update(*[x[one_of_key] for x in value if one_of_key in x])
                 cleaned[one_of_key] = list(sorted(one_of_values))
+            elif key == 'anyOf':
+                # Collapse anyOfs enums if possible.
+                any_of_key = set()
+                any_of_key.update(*[x.keys() for x in value])
+                any_of_key.discard('permission')
+                any_of_key.discard('comment')
+                any_of_key.discard('enum_descriptions')
+                any_of_key.discard('submissionExample')
+                any_of_key.discard('oneOf')
+                if len(any_of_key) != 1:
+                    raise ValueError(f'anyOf key not the same: {value} {any_of_key}')
+                any_of_key = any_of_key.pop()
+                any_of_values = set()
+                # Surface nested oneOfs enums into anyOfs enums.
+                one_ofs = []
+                for x in value:
+                    if 'oneOf' in x:
+                        one_ofs = [clean_schema(y) for y in x['oneOf']]
+                any_of_values.update(*[x[any_of_key] for x in value + one_ofs if any_of_key in x])
+                cleaned[any_of_key] = list(sorted(any_of_values))
             else:
                 cleaned[key] = value
     if 'linkTo' in schema or 'linkFrom' in schema:
@@ -368,7 +388,7 @@ def generate():
     schema_names_to_collection_names = get_schema_names_to_collection_names()
     raw_embedded_fields = get_raw_embedded_fields()
     slim_embedded_fields = get_slim_embedded_fields(raw_embedded_fields, raw_schemas)
-    openapi_spec = generate_openapi_spec(schemas, schema_names_to_collection_names, slim_embedded_fields)
+    openapi_spec = generate_openapi_spec(schemas, schema_names_to_collection_names, slim_embedded_fields, version='54.0.1')
     return openapi_spec
 
 
