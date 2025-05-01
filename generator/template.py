@@ -170,6 +170,8 @@ OPENAPI_SPEC_TEMPLATE =  {
                                                 "properties": {
                                                     "field": {"type": "string"},
                                                     "title": {"type": "string"},
+                                                    "total": {"type": "integer"},
+                                                    "type": {"type": "string"},
                                                     "terms": {
                                                         "type": "array",
                                                         "items": {
@@ -708,6 +710,8 @@ def get_collection_template(collection_name, schema_name):
                                                 "properties": {
                                                     "field": {"type": "string"},
                                                     "title": {"type": "string"},
+                                                    "total": {"type": "integer"},
+                                                    "type": {"type": "string"},
                                                     "terms": {
                                                         "type": "array",
                                                         "items": {
