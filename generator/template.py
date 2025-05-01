@@ -173,11 +173,7 @@ OPENAPI_SPEC_TEMPLATE =  {
                                                     "total": {"type": "integer"},
                                                     "type": {"type": "string"},
                                                     "terms": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "title": "SearchFacetTermValue",
-                                                            "type": "object",
-                                                        }
+                                                        "description": "Usually array of objects but can also just be object."
                                                     }
                                                 }
                                             }
@@ -547,20 +543,7 @@ OPENAPI_SPEC_TEMPLATE =  {
                                 "title": {
                                     "type": "string"
                                 },
-                                "terms": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "key": {
-                                                "type": "string"
-                                            },
-                                            "doc_count": {
-                                                "type": "integer"
-                                            }
-                                        }
-                                    }
-                                },
+                                "terms": {},
                                 "total": {
                                     "type": "integer"
                                 },
@@ -712,13 +695,7 @@ def get_collection_template(collection_name, schema_name):
                                                     "title": {"type": "string"},
                                                     "total": {"type": "integer"},
                                                     "type": {"type": "string"},
-                                                    "terms": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "title": "SearchFacetTermValue",
-                                                            "type": "object",
-                                                        }
-                                                    }
+                                                    "terms": {}
                                                 }
                                             }
                                         }
