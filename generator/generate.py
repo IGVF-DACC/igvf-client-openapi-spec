@@ -333,7 +333,7 @@ def get_slim_embedded_fields(raw_embedded_fields, raw_schemas):
         for f in fields:
             fname = f['path']
             for afname in all_fields:
-                if afname.startswith(fname) and len(fname) != len(afname):
+                if afname.startswith(fname + '.') and len(fname) != len(afname):
                     print('removing -------->', fname, afname)
                     to_remove_fields.append(fname)
         fields = {
