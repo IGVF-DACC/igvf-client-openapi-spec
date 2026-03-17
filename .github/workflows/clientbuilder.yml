@@ -1,6 +1,9 @@
 name: Build and update IGVF clients
 
 on:
+  schedule:
+    - cron:
+        '0 3 * * 5' # 20:00 Thursday PST
   workflow_dispatch:
 
 jobs:
