@@ -126,8 +126,6 @@ def test_generator_get_slim_embedded_fields(raw_schemas, raw_embedded_fields):
         'samples.construct_library_sets.small_scale_gene_list.summary',
         'samples.construct_library_sets.small_scale_gene_list.symbol',
         'samples.construct_library_sets.summary',
-        'samples.disease_terms.@id',
-        'samples.disease_terms.term_name',
         'samples.modifications.@id',
         'samples.modifications.modality',
         'samples.sample_terms.@id',
